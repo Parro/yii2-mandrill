@@ -12,7 +12,8 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "mandrill/mandrill": "*"
+        "mandrill/mandrill": "*",
+        "mailchimp/mailchimp": "^2.0.6"
     },
     "require-dev": {
         "codeception/codeception": "*",

@@ -16,6 +16,8 @@ use yii\base\InvalidConfigException;
 use nickcv\mandrill\Message;
 use Mandrill;
 use Mandrill_Error;
+use Mailchimp;
+use Mailchimp_Error;
 
 /**
  * Mailer is the class that consuming the Message object sends emails thorugh
@@ -73,9 +75,18 @@ class Mailer extends BaseMailer
      * @var string message default class name.
      */
     public $messageClass = 'nickcv\mandrill\Message';
+    /**
+     * @var string message default class name.
+     */
+    public $mandrillClass = 'Mandrill';
 
     /**
-     * @var Mandrill the Mandrill instance
+     * @var array Options to pass to Mailchimp class
+     */
+    public $mailchimpOpts = [];
+
+    /**
+     * @var Mailchimp the Mandrill instance
      */
     private $_mandrill;
 
@@ -101,7 +112,7 @@ class Mailer extends BaseMailer
         }
 
         try {
-            $this->_mandrill = new Mandrill($this->_apikey);
+            $this->_mandrill = new $this->mandrillClass($this->_apikey, $this->mailchimpOpts);
         } catch (\Exception $exc) {
             \Yii::error($exc->getMessage());
             throw new \Exception('an error occurred with your mailer. Please check the application logs.', 500);
@@ -131,7 +142,7 @@ class Mailer extends BaseMailer
     /**
      * Gets Mandrill instance
      *
-     * @return Mandrill initialized Mandrill
+     * @return Mandrill|Mailchimp initialized Mandrill
      * @since 1.6.0
      */
     public function getMandrill()
@@ -204,6 +215,9 @@ class Mailer extends BaseMailer
                 );
             }
         } catch (Mandrill_Error $e) {
+            \Yii::error('A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage(), self::LOG_CATEGORY);
+            return false;
+        } catch (Mailchimp_Error $e) {
             \Yii::error('A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage(), self::LOG_CATEGORY);
             return false;
         }
