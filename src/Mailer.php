@@ -101,7 +101,7 @@ class Mailer extends BaseMailer
      *
      * @inheritdoc
      */
-    public function init($mandrill = null)
+    public function init()
     {
         if (!$this->_apikey) {
             throw new InvalidConfigException('"' . get_class($this) . '::apikey" cannot be null.');
@@ -112,11 +112,7 @@ class Mailer extends BaseMailer
         }
 
         try {
-            if($mandrill === null) {
-                $this->_mandrill = new $this->mandrillClass($this->_apikey, $this->mailchimpOpts);
-            } else{
-                $this->_mandrill = $mandrill;
-            }
+            $this->_mandrill = new $this->mandrillClass($this->_apikey, $this->mailchimpOpts);
         } catch (\Exception $exc) {
             \Yii::error($exc->getMessage());
             throw new \Exception('an error occurred with your mailer. Please check the application logs.', 500);
@@ -141,6 +137,15 @@ class Mailer extends BaseMailer
         }
 
         $this->_apikey = $trimmedApikey;
+    }
+    /**
+     * Sets Mandrill Object
+     *
+     * @param Mandrill $mandrill the Mandrill Object
+     */
+    public function setMandrill($mandrill)
+    {
+        $this->_mandrill = $mandrill;
     }
 
     /**
