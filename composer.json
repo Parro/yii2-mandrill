@@ -20,6 +20,16 @@
         "victorjonsson/markdowndocs": "*",
         "yiisoft/yii2-coding-standards": "~2.0"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/mauroparolari/mandrill-api-php.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "nickcv\\mandrill\\": "src/"
