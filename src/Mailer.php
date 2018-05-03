@@ -112,7 +112,7 @@ class Mailer extends BaseMailer
         }
 
         try {
-            $this->_mandrill = new $this->mandrillClass($this->_apikey, $this->mailchimpOpts);
+            $this->_mandrill = new $this->mandrillClass($this->_apikey);
         } catch (\Exception $exc) {
             \Yii::error($exc->getMessage());
             throw new \Exception('an error occurred with your mailer. Please check the application logs.', 500);
